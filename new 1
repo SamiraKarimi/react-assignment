@@ -1,0 +1,200 @@
+shortcut for bring the replace dialog is on the edit dialog and it's crtl + H
+for using wrapper around shit+Crtl+p, then add the wrap and enter
+================JOi=======================
+npx create-react-app nameofproject
+if we use the npx we dont need to use install but for npm we should use it
+font awesome 4.7
+bootstrap safeVersion 4.1
+npm install bootstrap@4.1
+import 'bootstrap/dist/css/bootstrap.min.css';
+in mosh we don't include the .min
+
+===================================
+how to add routing in react-app
+
+1.npm i react-router-dom@4.3
+2.go to index.js 
+import {BrowserRouter } from react-router-dom
+ <BrowserRouter><App /></BrowserRouter>
+==inside of app componennts i should 
+import {Route,Switch} from 'react-router-dom'
+return (
+<div>
+<NavBar/>
+<div className= 'content'>
+<Switch>
+<Route path='/products' componennt= {Products} />
+<Route path='/posts' componennt = {Post} />
+<Route path='/' exact componennt={Home} />
+</Switch>
+</div>
+</div>
+)
+Switch ignaore the other routes after that 
+========================
+how to refuse defualte behaviour in a tag 
+import {Link} from 'react-router-dom'
+1.replace all the a tags with the link or NavLink
+2.<a href = "/">Home</a> ==><Link to='/'>Home</Link>
+ 
+Route component gives us 3 props included history, location, and match
+Route componnets is a wrapper around componennt and its aautomatically inject 3 props for our componenets
+
+if we wanted to add additional props in componenets 
+<Route path='/' render = {(props) => <Products adithinal={props} {...props}/>}
+match going to give us the params like id 
+for accessing it we can do this.props.match.id
+stack overflow
+<Route path="/users/:id" render={(props) => <UserPage {...props} />}/> 
+this.props.match.params.id
+for link it should be like
+<link to={`/products/${product.id}`}></a>
+we should avoid optional parameters and instead of including it in the month we should include it in the query string
+query string is what we appned to the url after question mark in the url and we can have 0 or more paramenters
+query string paramenteres come in location search and value of property of deacrch going to show that 
+this.props.location.search
+bc we don't want to work mannuly with query string we should use the famouse package calles 
+npm i query-string@6.1.0
+it is a popular package for working with the query strings
+import querySearch from "stringquery";
+const parsed = queryString.parse(props.location.search);
+======
+programmatic nderme that redirect when submit the form or click the button
+ 
+3 props match location and history that history has a push and replace
+push vs replace 
+push method add a new addres in browser history so we can use the back buton to go back 
+but replace , replacce the new address so we don't have the history and its good for login page
+for writing programatic navigation 
+handleSave= () =>{
+this.props.history.push('/products');
+}
+if we are on the functional component we can not write function 
+so we can directily do: onClick = {()=> history.push('/products')}
+==============================
+when we clone something from github 
+1...it looks that it used ssh 
+2... git clone  addresee
+3.npm install 
+4.npm start
+=============
+two types of components
+containers(smart components) that has state or dumb(presentational) componenets
+how to create store in redux: with creatStore from 'redux'
+import {createStore} form 'redex'
+and then const store = createStore(rootReducer)
+how to connect react with redux 
+we also have the react-redux that give us to packages that is {provider,connect}
+how to pass down store to the component ? we should wrap the container that here is App with provider
+<Provider store= {store}>
+<App />
+</Provider>
+connect is use for just eliminate using .subscribe 
+connect that we add at the button is higher order function
+that gets the function and return another funciton and we call it higher order componnent
+so connect is a highr order function 
+=====imutable library =============================================================================
+after npm install immutable import {Map} from 'immutable' i believe
+for working with map we can not use the books.get('title')
+for making it integrate with other library that need plane  javascript we should do it by :
+book.toJS() method to make it javascript object
+for using immutable instead of regular way that we use with like
+book.isPublished = true; we should do book.set('isPublished',true);
+in this.way it is not going to modify the old object it is going tp return the new object
+///using immer instead of immutable
+npm i immer
+import {produce} form 'immer';
+ produce(book, draftBook => {
+ draftBook.isPublished = true})
+ so produce make a copy of object and make it to the draftsBook
+ ///////////////
+ subscribe in store we get notified each time that store changed
+ we do not have setState we just have getState so for updating the store we have to dispatch the action 
+
+==========================================
+radio box in react 
+in state define something like filtered better to be object {} and initialise it eith all-genres to be and eachtime that you clicked just this.setstate({selectedGenre:genre}
+) and then filter based on 
+===========================
+for checkbox there are 2 ways
+1.define a property in state and check if its exit or not
+2.define a property inside the movie and give it the value of false by default
+==========================
+for checkbox we should define an property inside of the partucular state
+
+
+=====================================================
+routing in the react 
+Router gives us three props 
+what if we wanted to pass extra parameters in the componenets
+<Route path='/product' componen= {Product} />
+instead of component we should do the :
+<Route path='/prodoct' render = {(props)=> <Product name={name} {...props}/>}
+1.history 2.location 3.match
+3.match is for routers that we can have access to it by match.params.? 
+2.location we can have access to the querystring that is a right place for optional ruting
+
+================whaat is the route patameter ?
+when click on link and see the id on the url 
+<Route path="/product/:id" component{ProductDetails}
+it cames to the match/params/id
+if we wanted to show it in ProductDetails we can see it as 
+<h1> {this.props.match.params.id}</h1>
+and we <link to={`/prodoct/${prodoct.id}`}
+how to make parameter optionals ? path="/posts/:year?/:month?"
+we can habve access like paramas.match
+we should ignore optional paramaters 
+instead of using  query string for that just like 
+localhost:3001/posts?sorteBy=newest&approved=true
+how to read optional parameters in query string ?
+we can find it in location/search and we should use a library for it
+ npm i query-string@6.1.0
+and in our component we also should get it like:
+import queryString form 'queryString';
+const Posts = ({match,location})=>{
+///location.search()
+const result = queryString.parse(location.search)
+}
+switch is for we wanted to have just one routing match
+exact it should be exactly
+===========redirecting
+import {redirect} form 'react-router-dom;
+<Route path=''
+<Route path='/not-found' component = {notFound}/>
+<Redirect to='/not-found' />
+<Redirect form='/message' to='/pasts'/>
+=====================programatic navigation
+when you want to submit the button or form like when push the save button come back to the other page 
+...history object with push and replace 
+in replace we dont have history at all
+in our component in the handleSave = () ={
+this.props.history.push('/products')
+}
+we will come back to the products page
+
+=========================================
+for the forms in the form we have the onSubmit method 
+<form onSubmit={this.handleSubmit}> and then we should handle it 
+handleSubmit = e => {
+e.preventDefault();
+//whatever that we want to do with form
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
